@@ -1,0 +1,18 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "composite": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["dist", "node_modules", "**/*.test.ts"],
+  "references": [
+    { "path": "../core" },
+    { "path": "../adapters/redis" },
+    { "path": "../adapters/dynamodb" },
+    { "path": "../adapters/qdrant" },
+    { "path": "../cost-tracker" },
+    { "path": "../observability" }
+  ]
+}

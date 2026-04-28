@@ -1,0 +1,60 @@
+{
+  "name": "@llm-cache/server",
+  "version": "0.1.0",
+  "author": "Rick Somers <rick@reaatech.com> (https://reaatech.com)",
+  "description": "HTTP service wrapper for llm-cache",
+  "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reaatech/llm-cache.git",
+    "directory": "packages/server"
+  },
+  "homepage": "https://github.com/reaatech/llm-cache#readme",
+  "bugs": {
+    "url": "https://github.com/reaatech/llm-cache/issues"
+  },
+  "keywords": ["llm-cache", "server", "http", "cache"],
+  "bin": {
+    "llm-cache-server": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@llm-cache/core": "workspace:*",
+    "@llm-cache/adapters-redis": "workspace:*",
+    "@llm-cache/adapters-dynamodb": "workspace:*",
+    "@llm-cache/adapters-qdrant": "workspace:*",
+    "@llm-cache/cost-tracker": "workspace:*",
+    "@llm-cache/observability": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "vitest": "^1.3.0",
+    "@vitest/coverage-v8": "^1.3.0"
+  }
+}
