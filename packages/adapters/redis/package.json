@@ -1,0 +1,52 @@
+{
+  "name": "@llm-cache/adapters-redis",
+  "version": "0.1.0",
+  "author": "Rick Somers <rick@reaatech.com> (https://reaatech.com)",
+  "description": "Redis storage adapter for llm-cache",
+  "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reaatech/llm-cache.git",
+    "directory": "packages/adapters/redis"
+  },
+  "homepage": "https://github.com/reaatech/llm-cache#readme",
+  "bugs": {
+    "url": "https://github.com/reaatech/llm-cache/issues"
+  },
+  "keywords": ["llm-cache", "redis", "cache", "adapter"],
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@llm-cache/core": "workspace:*",
+    "redis": "^4.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "vitest": "^1.3.0",
+    "@vitest/coverage-v8": "^1.3.0"
+  }
+}
