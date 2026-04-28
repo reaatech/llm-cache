@@ -1,0 +1,20 @@
+{
+  "name": "@llm-cache/examples",
+  "version": "0.1.0",
+  "author": "Rick Somers <rick@reaatech.com> (https://reaatech.com)",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@llm-cache/core": "workspace:*",
+    "@llm-cache/adapters-redis": "workspace:*",
+    "@llm-cache/adapters-qdrant": "workspace:*",
+    "@llm-cache/adapters-dynamodb": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "typescript": "^5.4.0"
+  }
+}
