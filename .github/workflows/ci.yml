@@ -112,6 +112,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Build packages
+        run: pnpm build
+
       - name: Run coverage (core)
         run: pnpm --filter @reaatech/llm-cache test:coverage
 
