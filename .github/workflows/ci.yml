@@ -27,7 +27,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
 
       - name: Lint
         run: pnpm lint
@@ -52,7 +52,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
 
       - name: Dependency audit
         run: pnpm audit --audit-level=high
@@ -87,7 +87,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
 
       - name: Test ${{ matrix.package }}
         run: pnpm --filter ${{ matrix.package }} test
@@ -110,7 +110,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
 
       - name: Run coverage (core)
         run: pnpm --filter @reaatech/llm-cache test:coverage
@@ -139,7 +139,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
 
       - name: Build all packages
         run: pnpm build
@@ -188,7 +188,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
 
       - name: Build all packages
         run: pnpm build
