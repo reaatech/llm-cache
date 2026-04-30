@@ -49,7 +49,7 @@ llm-cache is a sophisticated semantic caching layer designed to reduce LLM API c
 
 ## Core Components
 
-### 1. Cache Engine (`@llm-cache/core`)
+### 1. Cache Engine (`@reaatech/llm-cache`)
 
 The heart of the system, responsible for orchestrating cache operations.
 
@@ -100,7 +100,7 @@ class SimilarityMatcher {
 - Result ranking and scoring
 - Use case and model filtering
 
-### 2. Embedding Service (`@llm-cache/core/embedding`)
+### 2. Embedding Service (`@reaatech/llm-cache/embedding`)
 
 Handles all embedding-related operations with cost optimization.
 
@@ -140,7 +140,7 @@ class EmbeddingCache {
 }
 ```
 
-### 3. Storage Adapters (`@llm-cache/adapters/*`)
+### 3. Storage Adapters (`@reaatech/llm-cache-adapters/*`)
 
 Abstract storage layer with multiple implementations.
 
@@ -257,7 +257,7 @@ class InMemoryAdapter implements StorageAdapter {
 }
 ```
 
-### 4. Cost Tracker (`@llm-cache/cost-tracker`)
+### 4. Cost Tracker (`@reaatech/llm-cache-cost-tracker`)
 
 Comprehensive cost tracking and savings calculation.
 
@@ -303,7 +303,7 @@ interface ModelPricing {
 }
 ```
 
-### 5. Observability Service (`@llm-cache/observability`)
+### 5. Observability Service (`@reaatech/llm-cache-observability`)
 
 Enterprise-grade monitoring and logging.
 
@@ -700,15 +700,15 @@ class AuditLogger {
 
 **Primary Distribution: npm Library**
 
-llm-cache is primarily distributed as a set of npm packages (`@llm-cache/core`, `@llm-cache/adapters-redis`, etc.) that developers import into their applications. This provides the tightest integration with existing LLM client code and the lowest latency (no network hop to a separate service).
+llm-cache is primarily distributed as a set of npm packages (`@reaatech/llm-cache`, `@reaatech/llm-cache-adapters-redis`, etc.) that developers import into their applications. This provides the tightest integration with existing LLM client code and the lowest latency (no network hop to a separate service).
 
 **Optional for Users, Required to Develop: HTTP Service Wrapper**
 
-A thin HTTP wrapper is provided as `@llm-cache/server`. Users can choose to import `@llm-cache/core` directly into their application (lowest latency, tightest integration) OR deploy `@llm-cache/server` as a sidecar/centralized service (polyglot environments, service-oriented architectures).
+A thin HTTP wrapper is provided as `@reaatech/llm-cache-server`. Users can choose to import `@reaatech/llm-cache` directly into their application (lowest latency, tightest integration) OR deploy `@reaatech/llm-cache-server` as a sidecar/centralized service (polyglot environments, service-oriented architectures).
 
 The server package is **optional for end users** but is a **required workspace package to develop and maintain** — it must be built, tested, and released in lockstep with core releases.
 
-The Docker, Kubernetes, and Helm configurations described below apply to the `@llm-cache/server` service wrapper.
+The Docker, Kubernetes, and Helm configurations described below apply to the `@reaatech/llm-cache-server` service wrapper.
 
 ---
 
