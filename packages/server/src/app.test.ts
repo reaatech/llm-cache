@@ -43,9 +43,12 @@ describe('Server App', () => {
     process.env.OPENAI_API_KEY = undefined;
   });
 
-  async function fetchJson(path: string, opts?: RequestInit) {
+  async function fetchJson(
+    path: string,
+    opts?: RequestInit,
+  ): Promise<{ status: number; data: Record<string, unknown> }> {
     const res = await fetch(`${baseUrl}${path}`, opts);
-    const data = await res.json();
+    const data = (await res.json()) as Record<string, unknown>;
     return { status: res.status, data };
   }
 
