@@ -43,10 +43,10 @@ describe('Server App', () => {
     process.env.OPENAI_API_KEY = undefined;
   });
 
-  // biome-ignore lint/suspicious/noExplicitAny: test response fixture
   async function fetchJson(
     path: string,
     opts?: RequestInit,
+    // biome-ignore lint/suspicious/noExplicitAny: test response fixture
   ): Promise<{ status: number; data: any }> {
     const res = await fetch(`${baseUrl}${path}`, opts);
     const data = await res.json();
