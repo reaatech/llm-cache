@@ -1,8 +1,8 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import { CacheEngine } from './CacheEngine.js';
-import { InMemoryAdapter } from '../storage/InMemoryAdapter.js';
-import type { EmbeddingProvider } from '../embedding/EmbeddingProvider.js';
+import { beforeEach, describe, expect, it } from 'vitest';
 import type { CacheConfig } from '../config/CacheConfig.js';
+import type { EmbeddingProvider } from '../embedding/EmbeddingProvider.js';
+import { InMemoryAdapter } from '../storage/InMemoryAdapter.js';
+import { CacheEngine } from './CacheEngine.js';
 
 class FakeEmbedder implements EmbeddingProvider {
   private dimension: number;
@@ -15,7 +15,7 @@ class FakeEmbedder implements EmbeddingProvider {
     return Promise.resolve(
       Array(this.dimension)
         .fill(0)
-        .map(() => Math.random())
+        .map(() => Math.random()),
     );
   }
 
@@ -94,7 +94,7 @@ describe('CacheEngine', () => {
     await engine.set(
       'hello world',
       { content: 'hi' },
-      { model: 'gpt-4', modelVersion: 'gpt-4-0613' }
+      { model: 'gpt-4', modelVersion: 'gpt-4-0613' },
     );
 
     const result = await engine.get('hello world', { model: 'gpt-4', modelVersion: 'gpt-4-0613' });
@@ -112,7 +112,7 @@ describe('CacheEngine', () => {
         model: 'gpt-4',
         modelVersion: 'gpt-4-0613',
         temperature: 0.5,
-      }
+      },
     );
 
     // Same prompt, different temperature = different fingerprint = miss
@@ -128,7 +128,7 @@ describe('CacheEngine', () => {
     await engine.set(
       'hello world',
       { content: 'hi' },
-      { model: 'gpt-4', modelVersion: 'gpt-4-0613' }
+      { model: 'gpt-4', modelVersion: 'gpt-4-0613' },
     );
 
     const result = await engine.invalidate({ useCase: 'general' });
@@ -162,7 +162,7 @@ describe('CacheEngine', () => {
     if (result.hit) {
       expect(typeof result.entry.response).toBe('object');
       expect((result.entry.response as typeof complexResponse).choices[0].message.content).toBe(
-        'hi'
+        'hi',
       );
     }
   });
@@ -175,7 +175,7 @@ describe('CacheEngine', () => {
         model: 'gpt-4',
         modelVersion: 'gpt-4-0613',
       },
-      { queryType: 'factual' }
+      { queryType: 'factual' },
     );
 
     expect(entry.metadata.ttl).toBe(1800);
@@ -189,7 +189,7 @@ describe('CacheEngine', () => {
         model: 'gpt-4',
         modelVersion: 'gpt-4-0613',
       },
-      { sensitive: true }
+      { sensitive: true },
     );
 
     expect(entry.metadata.ttl).toBe(600);
@@ -247,7 +247,7 @@ describe('CacheEngine', () => {
       'prompt',
       'response',
       { model: 'gpt-4', modelVersion: 'gpt-4-0613' },
-      { tokens: { prompt: 100, completion: 200 } }
+      { tokens: { prompt: 100, completion: 200 } },
     );
     expect(entry.tokens.total).toBe(300);
     expect(entry.cost.total).toBeCloseTo(0.003);

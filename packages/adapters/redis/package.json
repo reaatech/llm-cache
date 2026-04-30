@@ -20,7 +20,12 @@
   "bugs": {
     "url": "https://github.com/reaatech/llm-cache/issues"
   },
-  "keywords": ["llm-cache", "redis", "cache", "adapter"],
+  "keywords": [
+    "llm-cache",
+    "redis",
+    "cache",
+    "adapter"
+  ],
   "files": [
     "dist",
     "README.md"

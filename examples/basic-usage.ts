@@ -1,5 +1,5 @@
-import { CacheEngine, InMemoryAdapter, OpenAIEmbedder } from '@reaatech/llm-cache';
 import type { CacheConfig } from '@reaatech/llm-cache';
+import { CacheEngine, InMemoryAdapter, OpenAIEmbedder } from '@reaatech/llm-cache';
 
 const config: CacheConfig = {
   storage: { adapter: 'memory' },
@@ -63,7 +63,7 @@ async function main() {
   await cache.set(
     'What is TypeScript?',
     { choices: [{ message: { content: 'TypeScript is a typed superset of JavaScript.' } }] },
-    { model: 'gpt-4', modelVersion: 'gpt-4-0613' }
+    { model: 'gpt-4', modelVersion: 'gpt-4-0613' },
   );
 
   // Exact match
@@ -82,7 +82,7 @@ async function main() {
   });
   console.log(
     'Semantic match:',
-    semantic.hit ? `${semantic.type} hit (confidence: ${semantic.confidence})` : 'miss'
+    semantic.hit ? `${semantic.type} hit (confidence: ${semantic.confidence})` : 'miss',
   );
 
   // Miss

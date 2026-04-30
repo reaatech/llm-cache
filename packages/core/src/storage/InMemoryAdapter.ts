@@ -1,9 +1,9 @@
 import type {
   CacheEntry,
-  InvalidationCriteria,
-  StorageStats,
   HealthStatus,
+  InvalidationCriteria,
   SimilarityResult,
+  StorageStats,
   VectorSearchFilters,
 } from '../types/index.js';
 import type { VectorStorageAdapter } from './StorageAdapter.js';
@@ -52,7 +52,7 @@ export class InMemoryAdapter implements VectorStorageAdapter {
     if (deleted && entry) {
       this.stats.totalSizeBytes = Math.max(
         0,
-        this.stats.totalSizeBytes - JSON.stringify(entry).length
+        this.stats.totalSizeBytes - JSON.stringify(entry).length,
       );
     }
     return Promise.resolve(deleted);
@@ -112,7 +112,7 @@ export class InMemoryAdapter implements VectorStorageAdapter {
     embedding: number[],
     threshold: number,
     filters: VectorSearchFilters,
-    limit = 10
+    limit = 10,
   ): Promise<SimilarityResult[]> {
     const results: SimilarityResult[] = [];
 
@@ -157,7 +157,7 @@ export class InMemoryAdapter implements VectorStorageAdapter {
       if (match) {
         this.stats.totalSizeBytes = Math.max(
           0,
-          this.stats.totalSizeBytes - JSON.stringify(entry).length
+          this.stats.totalSizeBytes - JSON.stringify(entry).length,
         );
         this.cache.delete(key);
         count++;

@@ -20,7 +20,13 @@
   "bugs": {
     "url": "https://github.com/reaatech/llm-cache/issues"
   },
-  "keywords": ["llm-cache", "metrics", "logging", "prometheus", "observability"],
+  "keywords": [
+    "llm-cache",
+    "metrics",
+    "logging",
+    "prometheus",
+    "observability"
+  ],
   "files": [
     "dist",
     "README.md"

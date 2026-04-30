@@ -75,7 +75,7 @@ export interface CostCalculatorLike {
     model: string,
     promptTokens: number,
     completionTokens: number,
-    currency?: string
+    currency?: string,
   ): {
     inputCost: number;
     outputCost: number;

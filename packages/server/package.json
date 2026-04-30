@@ -20,7 +20,12 @@
   "bugs": {
     "url": "https://github.com/reaatech/llm-cache/issues"
   },
-  "keywords": ["llm-cache", "server", "http", "cache"],
+  "keywords": [
+    "llm-cache",
+    "server",
+    "http",
+    "cache"
+  ],
   "bin": {
     "llm-cache-server": "./dist/cli.js"
   },

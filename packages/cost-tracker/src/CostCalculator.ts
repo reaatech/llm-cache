@@ -40,7 +40,7 @@ export class CostCalculator {
     model: string,
     promptTokens: number,
     completionTokens: number,
-    currency = 'USD'
+    currency = 'USD',
   ): CostBreakdown {
     const safePromptTokens = Math.max(0, promptTokens);
     const safeCompletionTokens = Math.max(0, completionTokens);
@@ -76,7 +76,7 @@ export class CostCalculator {
 
   calculateSavings(
     originalCost: number,
-    embeddingCost: number
+    embeddingCost: number,
   ): {
     originalCost: number;
     embeddingCost: number;

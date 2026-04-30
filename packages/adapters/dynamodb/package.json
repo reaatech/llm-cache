@@ -20,7 +20,13 @@
   "bugs": {
     "url": "https://github.com/reaatech/llm-cache/issues"
   },
-  "keywords": ["llm-cache", "dynamodb", "aws", "cache", "adapter"],
+  "keywords": [
+    "llm-cache",
+    "dynamodb",
+    "aws",
+    "cache",
+    "adapter"
+  ],
   "files": [
     "dist",
     "README.md"

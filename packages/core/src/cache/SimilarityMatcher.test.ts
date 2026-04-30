@@ -1,7 +1,7 @@
-import { describe, it, expect, vi } from 'vitest';
-import { SimilarityMatcher } from './SimilarityMatcher.js';
+import { describe, expect, it, vi } from 'vitest';
 import type { VectorStorageAdapter } from '../storage/StorageAdapter.js';
 import type { CacheEntry } from '../types/index.js';
+import { SimilarityMatcher } from './SimilarityMatcher.js';
 
 function makeEntry(embedding: number[], overrides?: Partial<CacheEntry>): CacheEntry {
   const now = new Date();
@@ -107,7 +107,7 @@ describe('SimilarityMatcher', () => {
   it('should throw on dimension mismatch', () => {
     const matcher = new SimilarityMatcher({} as VectorStorageAdapter);
     expect(() => matcher.calculateCosineSimilarity([1, 0], [1, 0, 0])).toThrow(
-      'dimension mismatch'
+      'dimension mismatch',
     );
   });
 });

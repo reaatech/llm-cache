@@ -1,6 +1,6 @@
+import type { CacheConfig } from '@reaatech/llm-cache';
 import { CacheEngine, InMemoryAdapter, OpenAIEmbedder } from '@reaatech/llm-cache';
 import { RedisAdapter } from '@reaatech/llm-cache-adapters-redis';
-import type { CacheConfig } from '@reaatech/llm-cache';
 
 const config: CacheConfig = {
   storage: { adapter: 'redis' },
@@ -67,7 +67,7 @@ async function main() {
   await cache.set(
     'What is Redis?',
     { answer: 'An in-memory data structure store' },
-    { model: 'gpt-4', modelVersion: 'gpt-4-0613' }
+    { model: 'gpt-4', modelVersion: 'gpt-4-0613' },
   );
 
   const result = await cache.get('What is Redis?', { model: 'gpt-4', modelVersion: 'gpt-4-0613' });

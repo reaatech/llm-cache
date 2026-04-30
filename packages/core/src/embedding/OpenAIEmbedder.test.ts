@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { OpenAIEmbedder } from './OpenAIEmbedder.js';
 
 describe('OpenAIEmbedder', () => {
@@ -18,7 +18,7 @@ describe('OpenAIEmbedder', () => {
     vi.stubGlobal('fetch', fetchMock);
     vi.spyOn(
       embedder as unknown as { sleep: (ms: number) => Promise<void> },
-      'sleep'
+      'sleep',
     ).mockResolvedValue();
   });
 
@@ -141,7 +141,7 @@ describe('OpenAIEmbedder', () => {
       mockResponse([
         [0.1, 0.2, 0.3],
         [0.4, 0.5, 0.6],
-      ])
+      ]),
     );
 
     const results = await embedder.embedBatch(['hello', 'world']);

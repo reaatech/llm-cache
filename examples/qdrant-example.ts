@@ -1,6 +1,6 @@
+import type { CacheConfig } from '@reaatech/llm-cache';
 import { CacheEngine, InMemoryAdapter, OpenAIEmbedder } from '@reaatech/llm-cache';
 import { QdrantAdapter } from '@reaatech/llm-cache-adapters-qdrant';
-import type { CacheConfig } from '@reaatech/llm-cache';
 
 const config: CacheConfig = {
   storage: { adapter: 'memory' },
@@ -71,7 +71,7 @@ async function main() {
   await cache.set(
     'Explain quantum computing',
     { answer: 'Quantum computing uses qubits...' },
-    { model: 'gpt-4', modelVersion: 'gpt-4-0613' }
+    { model: 'gpt-4', modelVersion: 'gpt-4-0613' },
   );
 
   const result = await cache.get('What is quantum computing?', {

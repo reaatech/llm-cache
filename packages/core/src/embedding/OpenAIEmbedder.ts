@@ -37,7 +37,7 @@ export class OpenAIEmbedder implements EmbeddingProvider {
     if (cached) {
       if (expectedDimensions && cached.length !== expectedDimensions) {
         throw new Error(
-          `Embedding dimension mismatch: cached=${cached.length}, expected=${expectedDimensions}`
+          `Embedding dimension mismatch: cached=${cached.length}, expected=${expectedDimensions}`,
         );
       }
       // Refresh LRU position
@@ -64,7 +64,7 @@ export class OpenAIEmbedder implements EmbeddingProvider {
       if (cached) {
         if (expectedDimensions && cached.length !== expectedDimensions) {
           throw new Error(
-            `Embedding dimension mismatch: cached=${cached.length}, expected=${expectedDimensions}`
+            `Embedding dimension mismatch: cached=${cached.length}, expected=${expectedDimensions}`,
           );
         }
         this.cache.delete(cacheKey);
@@ -91,10 +91,7 @@ export class OpenAIEmbedder implements EmbeddingProvider {
     return out;
   }
 
-  private async fetchEmbeddings(
-    texts: string[],
-    expectedDimensions?: number
-  ): Promise<number[][]> {
+  private async fetchEmbeddings(texts: string[], expectedDimensions?: number): Promise<number[][]> {
     let lastError: Error | undefined;
 
     for (let attempt = 1; attempt <= this.maxRetries; attempt++) {
@@ -147,7 +144,7 @@ export class OpenAIEmbedder implements EmbeddingProvider {
           for (const e of embeddings) {
             if (e.length !== expectedDimensions) {
               throw new Error(
-                `Embedding dimension mismatch: received=${e.length}, expected=${expectedDimensions}`
+                `Embedding dimension mismatch: received=${e.length}, expected=${expectedDimensions}`,
               );
             }
           }
@@ -184,7 +181,7 @@ export class OpenAIEmbedder implements EmbeddingProvider {
   }
 
   private backoffMs(attempt: number): number {
-    return Math.pow(2, attempt) * 1000;
+    return 2 ** attempt * 1000;
   }
 
   private sleep(ms: number): Promise<void> {

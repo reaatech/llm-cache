@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
-import { sha256, buildPromptHash, buildCacheFingerprint, buildExactMatchKey } from './hash.js';
+import { describe, expect, it } from 'vitest';
+import { buildCacheFingerprint, buildExactMatchKey, buildPromptHash, sha256 } from './hash.js';
 
 describe('hash utilities', () => {
   it('sha256 should produce a 64-character hex string', () => {

@@ -1,4 +1,4 @@
-import { CacheConfigSchema, type CacheConfig } from '@reaatech/llm-cache';
+import { type CacheConfig, CacheConfigSchema } from '@reaatech/llm-cache';
 
 export interface ServerConfig {
   port: number;
@@ -21,13 +21,13 @@ export interface ServerConfig {
 function parseNumber(value: string | undefined, defaultValue: number): number {
   if (!value) return defaultValue;
   const parsed = parseInt(value, 10);
-  return isNaN(parsed) ? defaultValue : parsed;
+  return Number.isNaN(parsed) ? defaultValue : parsed;
 }
 
 function parseFloatValue(value: string | undefined, defaultValue: number): number {
   if (!value) return defaultValue;
   const parsed = parseFloat(value);
-  return isNaN(parsed) ? defaultValue : parsed;
+  return Number.isNaN(parsed) ? defaultValue : parsed;
 }
 
 export function loadConfig(): ServerConfig {
@@ -80,7 +80,7 @@ export function loadConfig(): ServerConfig {
     const issues = result.error.issues
       .map(
         (issue: { path: (string | number)[]; message: string }) =>
-          `${issue.path.join('.')}: ${issue.message}`
+          `${issue.path.join('.')}: ${issue.message}`,
       )
       .join(', ');
     throw new Error(`Invalid configuration: ${issues}`);

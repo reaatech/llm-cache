@@ -99,7 +99,7 @@ export class MetricsCollector {
       lines.push(`${name}{quantile="0.95"} ${p95}`);
       lines.push(`${name}{quantile="0.99"} ${p99}`);
     }
-    return lines.join('\n') + '\n';
+    return `${lines.join('\n')}\n`;
   }
 
   reset(): void {

@@ -1,14 +1,14 @@
 import { QdrantClient } from '@qdrant/js-client-rest';
-import { v5 as uuidv5 } from 'uuid';
 import type {
   CacheEntry,
-  InvalidationCriteria,
-  StorageStats,
   HealthStatus,
+  InvalidationCriteria,
   SimilarityResult,
+  StorageStats,
   VectorSearchFilters,
+  VectorStorageAdapter,
 } from '@reaatech/llm-cache';
-import type { VectorStorageAdapter } from '@reaatech/llm-cache';
+import { v5 as uuidv5 } from 'uuid';
 
 // Stable namespace UUID so the same key always maps to the same point ID across processes.
 const KEY_NAMESPACE = '6ba7b811-9dad-11d1-80b4-00c04fd430c8';
@@ -174,18 +174,14 @@ export class QdrantAdapter implements VectorStorageAdapter {
   }
 
   async findByUseCase(useCase: string, limit = 100): Promise<CacheEntry[]> {
-    return this.scrollAll(
-      { must: [{ key: 'useCase', match: { value: useCase } }] },
-      limit,
-      true
-    );
+    return this.scrollAll({ must: [{ key: 'useCase', match: { value: useCase } }] }, limit, true);
   }
 
   async findByModelVersion(modelVersion: string, limit = 100): Promise<CacheEntry[]> {
     return this.scrollAll(
       { must: [{ key: 'modelVersion', match: { value: modelVersion } }] },
       limit,
-      true
+      true,
     );
   }
 
@@ -193,7 +189,7 @@ export class QdrantAdapter implements VectorStorageAdapter {
     embedding: number[],
     threshold: number,
     filters: VectorSearchFilters,
-    limit = 10
+    limit = 10,
   ): Promise<SimilarityResult[]> {
     const mustConditions: Array<Record<string, unknown>> = [];
 
@@ -227,7 +223,7 @@ export class QdrantAdapter implements VectorStorageAdapter {
 
     return result
       .map((hit) => ({
-        entry: this.deserializeEntry(hit.payload!, (hit.vector as number[]) ?? []),
+        entry: this.deserializeEntry(hit.payload ?? {}, (hit.vector as number[]) ?? []),
         similarity: hit.score,
       }))
       .filter((r) => !this.isExpired(r.entry));
@@ -319,7 +315,7 @@ export class QdrantAdapter implements VectorStorageAdapter {
   private async scrollAll(
     filter: Record<string, unknown>,
     limit: number,
-    withVector: boolean
+    withVector: boolean,
   ): Promise<CacheEntry[]> {
     const out: CacheEntry[] = [];
     let offset: string | number | undefined;
@@ -391,7 +387,7 @@ export class QdrantAdapter implements VectorStorageAdapter {
     try {
       createdAt = new Date(String(metadata.createdAt));
       expiresAt = new Date(String(metadata.expiresAt));
-      if (isNaN(createdAt.getTime()) || isNaN(expiresAt.getTime())) {
+      if (Number.isNaN(createdAt.getTime()) || Number.isNaN(expiresAt.getTime())) {
         createdAt = new Date();
         expiresAt = new Date(Date.now() - 1);
       }
@@ -413,8 +409,14 @@ export class QdrantAdapter implements VectorStorageAdapter {
       embeddingDimensions: Number(payload.embeddingDimensions),
       useCase: String(payload.useCase),
       sensitive: Boolean(payload.sensitive),
-      tokens: this.coerceTokenCost(payload.tokens as Partial<{ prompt: number; completion: number; total: number }> | undefined),
-      cost: this.coerceTokenCost(payload.cost as Partial<{ prompt: number; completion: number; total: number }> | undefined),
+      tokens: this.coerceTokenCost(
+        payload.tokens as
+          | Partial<{ prompt: number; completion: number; total: number }>
+          | undefined,
+      ),
+      cost: this.coerceTokenCost(
+        payload.cost as Partial<{ prompt: number; completion: number; total: number }> | undefined,
+      ),
       metadata: {
         createdAt,
         ttl: Number(metadata.ttl) || 0,
@@ -425,7 +427,11 @@ export class QdrantAdapter implements VectorStorageAdapter {
     };
   }
 
-  private coerceTokenCost(obj?: Partial<{ prompt: number; completion: number; total: number }>): { prompt: number; completion: number; total: number } {
+  private coerceTokenCost(obj?: Partial<{ prompt: number; completion: number; total: number }>): {
+    prompt: number;
+    completion: number;
+    total: number;
+  } {
     if (!obj || typeof obj !== 'object') return { prompt: 0, completion: 0, total: 0 };
     const prompt = typeof obj.prompt === 'number' ? obj.prompt : 0;
     const completion = typeof obj.completion === 'number' ? obj.completion : 0;

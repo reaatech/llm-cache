@@ -1,6 +1,6 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { DynamoDBAdapter } from './DynamoDBAdapter.js';
 import type { CacheEntry } from '@reaatech/llm-cache';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { DynamoDBAdapter } from './DynamoDBAdapter.js';
 
 function makeEntry(overrides?: Partial<CacheEntry>): CacheEntry {
   const now = new Date();
@@ -63,7 +63,7 @@ describe('DynamoDBAdapter', () => {
     mockSend = vi.fn().mockResolvedValue({});
 
     adapter = new DynamoDBAdapter({ region: 'us-east-1', tableName: 'test' });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // biome-ignore lint/suspicious/noExplicitAny: test mock injection
     (adapter as any).client = { send: mockSend } as any;
   });
 
@@ -76,8 +76,8 @@ describe('DynamoDBAdapter', () => {
     mockSend.mockResolvedValueOnce({ Item: itemFromEntry('key', entry) });
     const result = await adapter.get('key');
     expect(result).not.toBeNull();
-    expect(result!.prompt).toBe('test');
-    expect(result!.id).toBe('test-id');
+    expect(result?.prompt).toBe('test');
+    expect(result?.id).toBe('test-id');
   });
 
   it('should return null for missing key', async () => {
@@ -109,7 +109,7 @@ describe('DynamoDBAdapter', () => {
     expect(command.input.Item.pk).toBe('key');
     expect(command.input.Item.id).toBe(entry.id);
     expect(command.input.Item.expiresAtEpoch).toBe(
-      Math.floor(entry.metadata.expiresAt.getTime() / 1000)
+      Math.floor(entry.metadata.expiresAt.getTime() / 1000),
     );
   });
 
@@ -119,14 +119,12 @@ describe('DynamoDBAdapter', () => {
       tableName: 'test',
       ttlAttribute: 'ttl',
     });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // biome-ignore lint/suspicious/noExplicitAny: test mock injection
     (customAdapter as any).client = { send: mockSend } as any;
     const entry = makeEntry();
     await customAdapter.set('key', entry);
     const command = mockSend.mock.calls[0][0];
-    expect(command.input.Item.ttl).toBe(
-      Math.floor(entry.metadata.expiresAt.getTime() / 1000)
-    );
+    expect(command.input.Item.ttl).toBe(Math.floor(entry.metadata.expiresAt.getTime() / 1000));
   });
 
   it('should delete a key', async () => {

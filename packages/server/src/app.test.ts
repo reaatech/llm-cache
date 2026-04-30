@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
+import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import type { createApp } from './app.js';
 
 const originalFetch = globalThis.fetch;
@@ -16,11 +16,11 @@ describe('Server App', () => {
         if (url.includes('api.openai.com')) {
           return new Response(
             JSON.stringify({ data: [{ embedding: new Array(1536).fill(0.1) }] }),
-            { status: 200, headers: { 'Content-Type': 'application/json' } }
+            { status: 200, headers: { 'Content-Type': 'application/json' } },
           );
         }
         return originalFetch(input, init);
-      })
+      }),
     );
 
     process.env.OPENAI_API_KEY = 'test-key';
