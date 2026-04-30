@@ -1,6 +1,6 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import { InMemoryAdapter } from './InMemoryAdapter.js';
+import { beforeEach, describe, expect, it } from 'vitest';
 import type { CacheEntry } from '../types/index.js';
+import { InMemoryAdapter } from './InMemoryAdapter.js';
 
 function makeEntry(embedding: number[], overrides?: Partial<CacheEntry>): CacheEntry {
   const now = new Date();
@@ -42,7 +42,7 @@ describe('InMemoryAdapter', () => {
 
     const retrieved = await adapter.get('key1');
     expect(retrieved).not.toBeNull();
-    expect(retrieved!.prompt).toBe('test prompt');
+    expect(retrieved?.prompt).toBe('test prompt');
   });
 
   it('should return null for missing keys', async () => {
@@ -107,5 +107,4 @@ describe('InMemoryAdapter', () => {
     const stats = await smallAdapter.getStats();
     expect(stats.totalEntries).toBe(2);
   });
-
 });

@@ -24,9 +24,7 @@ export class EncryptionService {
       this._key = keyOrPassphrase;
       this._salt = Buffer.from(options.salt ?? randomBytes(SALT_LENGTH));
     } else {
-      this._salt = options.salt
-        ? Buffer.from(options.salt)
-        : randomBytes(SALT_LENGTH);
+      this._salt = options.salt ? Buffer.from(options.salt) : randomBytes(SALT_LENGTH);
       this._key = scryptSync(String(keyOrPassphrase), this._salt, KEY_LENGTH);
     }
   }

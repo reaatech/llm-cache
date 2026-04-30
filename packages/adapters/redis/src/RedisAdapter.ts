@@ -1,6 +1,11 @@
-import { createClient, type RedisClientType } from 'redis';
-import type { CacheEntry, InvalidationCriteria, StorageStats, HealthStatus } from '@llm-cache/core';
-import type { StorageAdapter } from '@llm-cache/core';
+import type {
+  CacheEntry,
+  HealthStatus,
+  InvalidationCriteria,
+  StorageAdapter,
+  StorageStats,
+} from '@reaatech/llm-cache';
+import { type RedisClientType, createClient } from 'redis';
 
 export interface RedisAdapterConfig {
   url: string;
@@ -231,7 +236,7 @@ export class RedisAdapter implements StorageAdapter {
     try {
       const info = await this.client.info('keyspace');
       const match = info?.match(/keys=(\d+)/);
-      totalEntries = match ? parseInt(match[1], 10) : 0;
+      totalEntries = match ? Number.parseInt(match[1], 10) : 0;
     } catch {
       // info('keyspace') may not be available on all Redis versions
     }

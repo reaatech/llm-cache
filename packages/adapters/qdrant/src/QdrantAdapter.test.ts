@@ -1,7 +1,7 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import type { CacheEntry } from '@reaatech/llm-cache';
 import { v5 as uuidv5 } from 'uuid';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { QdrantAdapter } from './QdrantAdapter.js';
-import type { CacheEntry } from '@llm-cache/core';
 
 const KEY_NAMESPACE = '6ba7b811-9dad-11d1-80b4-00c04fd430c8';
 const pointId = (key: string) => uuidv5(key, KEY_NAMESPACE);
@@ -92,7 +92,7 @@ describe('QdrantAdapter', () => {
       collectionName: 'test-cache',
       vectorSize: 3,
     });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // biome-ignore lint/suspicious/noExplicitAny: test mock injection
     (adapter as any).client = mockClient as any;
   });
 
@@ -128,10 +128,10 @@ describe('QdrantAdapter', () => {
 
     const result = await adapter.get('key');
     expect(result).not.toBeNull();
-    expect(result!.prompt).toBe('test');
+    expect(result?.prompt).toBe('test');
     expect(mockClient.retrieve).toHaveBeenCalledWith(
       'test-cache',
-      expect.objectContaining({ ids: [pointId('key')] })
+      expect.objectContaining({ ids: [pointId('key')] }),
     );
   });
 
@@ -202,7 +202,9 @@ describe('QdrantAdapter', () => {
   it('should pass olderThan as a numeric range filter', async () => {
     mockClient.scroll.mockResolvedValueOnce({ points: [], next_page_offset: null });
     await adapter.invalidateByCriteria({ olderThan: new Date(1700_000_000_000) });
-    const filter = mockClient.scroll.mock.calls[0][1].filter as { must: Array<{ range?: unknown }> };
+    const filter = mockClient.scroll.mock.calls[0][1].filter as {
+      must: Array<{ range?: unknown }>;
+    };
     expect(filter.must.some((c) => c.range)).toBe(true);
   });
 

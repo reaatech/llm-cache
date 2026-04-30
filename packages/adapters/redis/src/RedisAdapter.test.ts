@@ -1,6 +1,6 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import type { CacheEntry } from '@reaatech/llm-cache';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { RedisAdapter } from './RedisAdapter.js';
-import type { CacheEntry } from '@llm-cache/core';
 
 function makeEntry(overrides?: Partial<CacheEntry>): CacheEntry {
   const now = new Date();
@@ -68,7 +68,7 @@ describe('RedisAdapter', () => {
     };
 
     adapter = new RedisAdapter({ url: 'redis://localhost:6379' });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // biome-ignore lint/suspicious/noExplicitAny: test mock injection
     (adapter as any).client = mockClient as any;
   });
 
@@ -94,8 +94,8 @@ describe('RedisAdapter', () => {
     mockClient.get.mockResolvedValueOnce(JSON.stringify(entry));
     const result = await adapter.get('key');
     expect(result).not.toBeNull();
-    expect(result!.prompt).toBe('test');
-    expect(result!.metadata.createdAt instanceof Date).toBe(true);
+    expect(result?.prompt).toBe('test');
+    expect(result?.metadata.createdAt instanceof Date).toBe(true);
   });
 
   it('should return null for missing key', async () => {

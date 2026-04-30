@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@reaatech/llm-cache": ["./packages/core/src/index.ts"],
+      "@reaatech/llm-cache-server": ["./packages/server/src/index.ts"],
+      "@reaatech/llm-cache-adapters-redis": ["./packages/adapters/redis/src/index.ts"],
+      "@reaatech/llm-cache-adapters-dynamodb": ["./packages/adapters/dynamodb/src/index.ts"],
+      "@reaatech/llm-cache-adapters-qdrant": ["./packages/adapters/qdrant/src/index.ts"],
+      "@reaatech/llm-cache-cost-tracker": ["./packages/cost-tracker/src/index.ts"],
+      "@reaatech/llm-cache-observability": ["./packages/observability/src/index.ts"]
+    }
+  }
+}

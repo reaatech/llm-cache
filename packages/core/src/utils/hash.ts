@@ -50,7 +50,7 @@ export function buildCacheFingerprint(options: {
 export function buildExactMatchKey(
   promptHash: string,
   useCase: string,
-  generationConfigHash: string
+  generationConfigHash: string,
 ): string {
   // Hash the useCase to neutralize delimiter collisions and any user-supplied special chars.
   const safeUseCase = sha256(useCase).slice(0, 16);

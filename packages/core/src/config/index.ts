@@ -1,1 +1,1 @@
-export { CacheConfigSchema, type CacheConfig } from './CacheConfig.js';
+export { type CacheConfig, CacheConfigSchema } from './CacheConfig.js';

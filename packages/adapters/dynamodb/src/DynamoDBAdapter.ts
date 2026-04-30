@@ -1,16 +1,21 @@
-import { DynamoDBClient, DescribeTableCommand } from '@aws-sdk/client-dynamodb';
+import { DescribeTableCommand, DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import {
+  BatchGetCommand,
+  BatchWriteCommand,
+  DeleteCommand,
   DynamoDBDocumentClient,
   GetCommand,
   PutCommand,
-  DeleteCommand,
-  BatchGetCommand,
-  BatchWriteCommand,
   QueryCommand,
   ScanCommand,
 } from '@aws-sdk/lib-dynamodb';
-import type { CacheEntry, InvalidationCriteria, StorageStats, HealthStatus } from '@llm-cache/core';
-import type { StorageAdapter } from '@llm-cache/core';
+import type {
+  CacheEntry,
+  HealthStatus,
+  InvalidationCriteria,
+  StorageAdapter,
+  StorageStats,
+} from '@reaatech/llm-cache';
 
 export interface DynamoDBAdapterConfig {
   region: string;
@@ -44,7 +49,7 @@ export class DynamoDBAdapter implements StorageAdapter {
       new GetCommand({
         TableName: this.tableName,
         Key: { pk: key },
-      })
+      }),
     );
 
     if (!result.Item) return null;
@@ -63,7 +68,7 @@ export class DynamoDBAdapter implements StorageAdapter {
       new PutCommand({
         TableName: this.tableName,
         Item: this.serialize(key, entry),
-      })
+      }),
     );
   }
 
@@ -72,7 +77,7 @@ export class DynamoDBAdapter implements StorageAdapter {
       new DeleteCommand({
         TableName: this.tableName,
         Key: { pk: key },
-      })
+      }),
     );
     return true;
   }
@@ -92,7 +97,7 @@ export class DynamoDBAdapter implements StorageAdapter {
             Keys: keys.map((k) => ({ pk: k })),
           },
         },
-      })
+      }),
     );
 
     const items = result.Responses?.[this.tableName] ?? [];
@@ -114,7 +119,7 @@ export class DynamoDBAdapter implements StorageAdapter {
         PutRequest: {
           Item: this.serialize(key, entry),
         },
-      })
+      }),
     );
 
     // DynamoDB batch write supports max 25 items per request
@@ -125,7 +130,7 @@ export class DynamoDBAdapter implements StorageAdapter {
           RequestItems: {
             [this.tableName]: chunk,
           },
-        })
+        }),
       );
     }
   }
@@ -138,7 +143,7 @@ export class DynamoDBAdapter implements StorageAdapter {
         DeleteRequest: {
           Key: { pk: k },
         },
-      })
+      }),
     );
 
     for (let i = 0; i < writeRequests.length; i += 25) {
@@ -148,7 +153,7 @@ export class DynamoDBAdapter implements StorageAdapter {
           RequestItems: {
             [this.tableName]: chunk,
           },
-        })
+        }),
       );
     }
 
@@ -165,7 +170,7 @@ export class DynamoDBAdapter implements StorageAdapter {
           ':pk': `USECASE#${useCase}`,
         },
         Limit: limit,
-      })
+      }),
     );
 
     return (result.Items ?? [])
@@ -183,7 +188,7 @@ export class DynamoDBAdapter implements StorageAdapter {
           ':pk': `MODEL#${modelVersion}`,
         },
         Limit: limit,
-      })
+      }),
     );
 
     return (result.Items ?? [])
@@ -204,7 +209,7 @@ export class DynamoDBAdapter implements StorageAdapter {
             KeyConditionExpression: 'gsi1pk = :pk',
             ExpressionAttributeValues: { ':pk': `USECASE#${criteria.useCase}` },
             ExclusiveStartKey: lastKey,
-          })
+          }),
         );
         for (const item of result.Items ?? []) {
           const entry = this.deserialize(item);
@@ -228,7 +233,7 @@ export class DynamoDBAdapter implements StorageAdapter {
             KeyConditionExpression: 'gsi2pk = :pk',
             ExpressionAttributeValues: { ':pk': `MODEL#${criteria.modelVersion}` },
             ExclusiveStartKey: lastKey,
-          })
+          }),
         );
         for (const item of result.Items ?? []) {
           const entry = this.deserialize(item);
@@ -246,7 +251,7 @@ export class DynamoDBAdapter implements StorageAdapter {
     let lastKey: Record<string, unknown> | undefined;
     do {
       const result = await this.client.send(
-        new ScanCommand({ TableName: this.tableName, ExclusiveStartKey: lastKey })
+        new ScanCommand({ TableName: this.tableName, ExclusiveStartKey: lastKey }),
       );
       for (const item of result.Items ?? []) {
         const entry = this.deserialize(item);
@@ -264,7 +269,7 @@ export class DynamoDBAdapter implements StorageAdapter {
   async getStats(): Promise<StorageStats> {
     try {
       const result = await this.rawClient.send(
-        new DescribeTableCommand({ TableName: this.tableName })
+        new DescribeTableCommand({ TableName: this.tableName }),
       );
       const itemCount = result.Table?.ItemCount ?? 0;
       const sizeBytes = result.Table?.TableSizeBytes ?? 0;
@@ -290,7 +295,7 @@ export class DynamoDBAdapter implements StorageAdapter {
         new ScanCommand({
           TableName: this.tableName,
           Limit: 1,
-        })
+        }),
       );
       return { healthy: true };
     } catch (error) {
@@ -348,7 +353,7 @@ export class DynamoDBAdapter implements StorageAdapter {
     try {
       createdAt = new Date(String(metadata.createdAt));
       expiresAt = new Date(String(metadata.expiresAt));
-      if (isNaN(createdAt.getTime()) || isNaN(expiresAt.getTime())) {
+      if (Number.isNaN(createdAt.getTime()) || Number.isNaN(expiresAt.getTime())) {
         createdAt = new Date();
         expiresAt = new Date(Date.now() - 1);
       }
@@ -370,8 +375,12 @@ export class DynamoDBAdapter implements StorageAdapter {
       embeddingDimensions: Number(item.embeddingDimensions ?? 0),
       useCase: String(item.useCase ?? ''),
       sensitive: Boolean(item.sensitive),
-      tokens: this.coerceTokenCost(item.tokens as Partial<{ prompt: number; completion: number; total: number }> | undefined),
-      cost: this.coerceTokenCost(item.cost as Partial<{ prompt: number; completion: number; total: number }> | undefined),
+      tokens: this.coerceTokenCost(
+        item.tokens as Partial<{ prompt: number; completion: number; total: number }> | undefined,
+      ),
+      cost: this.coerceTokenCost(
+        item.cost as Partial<{ prompt: number; completion: number; total: number }> | undefined,
+      ),
       metadata: {
         createdAt,
         ttl: Number(metadata.ttl) || 0,
@@ -382,7 +391,11 @@ export class DynamoDBAdapter implements StorageAdapter {
     };
   }
 
-  private coerceTokenCost(obj?: Partial<{ prompt: number; completion: number; total: number }>): { prompt: number; completion: number; total: number } {
+  private coerceTokenCost(obj?: Partial<{ prompt: number; completion: number; total: number }>): {
+    prompt: number;
+    completion: number;
+    total: number;
+  } {
     if (!obj || typeof obj !== 'object') return { prompt: 0, completion: 0, total: 0 };
     const prompt = typeof obj.prompt === 'number' ? obj.prompt : 0;
     const completion = typeof obj.completion === 'number' ? obj.completion : 0;

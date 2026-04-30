@@ -1,6 +1,6 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import { CacheEngine, InMemoryAdapter } from '@llm-cache/core';
-import type { CacheConfig, EmbeddingProvider } from '@llm-cache/core';
+import type { CacheConfig, EmbeddingProvider } from '@reaatech/llm-cache';
+import { CacheEngine, InMemoryAdapter } from '@reaatech/llm-cache';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 class DeterministicEmbedder implements EmbeddingProvider {
   embed(text: string): Promise<number[]> {
@@ -79,7 +79,7 @@ describe('CacheEngine Integration', () => {
     await engine.set(
       'What is the capital of France?',
       { answer: 'Paris' },
-      { model: 'gpt-4', modelVersion: 'gpt-4-0613' }
+      { model: 'gpt-4', modelVersion: 'gpt-4-0613' },
     );
 
     // Query with a semantically similar but different prompt
@@ -100,7 +100,7 @@ describe('CacheEngine Integration', () => {
     await engine.set(
       'What is TypeScript?',
       { answer: 'A typed superset of JavaScript' },
-      { model: 'gpt-4', modelVersion: 'gpt-4-0613' }
+      { model: 'gpt-4', modelVersion: 'gpt-4-0613' },
     );
 
     const result = await engine.get('What is TypeScript?', {
@@ -118,7 +118,7 @@ describe('CacheEngine Integration', () => {
     await engine.set(
       'classify: spam',
       { label: 'spam' },
-      { model: 'gpt-4', modelVersion: 'gpt-4-0613', useCase: 'classification' }
+      { model: 'gpt-4', modelVersion: 'gpt-4-0613', useCase: 'classification' },
     );
 
     // Same prompt in a different use case should miss
@@ -136,7 +136,7 @@ describe('CacheEngine Integration', () => {
       'expires soon',
       'value',
       { model: 'gpt-4', modelVersion: 'gpt-4-0613' },
-      { ttl: 0 } // expires immediately
+      { ttl: 0 }, // expires immediately
     );
 
     // Manually expire the entry by setting expiresAt in the past
@@ -169,17 +169,17 @@ describe('CacheEngine Integration', () => {
     await engine.set(
       'What is JavaScript?',
       { answer: 'JS' },
-      { model: 'gpt-4', modelVersion: 'gpt-4-0613' }
+      { model: 'gpt-4', modelVersion: 'gpt-4-0613' },
     );
     await engine.set(
       'What is Python?',
       { answer: 'PY' },
-      { model: 'gpt-4', modelVersion: 'gpt-4-0613' }
+      { model: 'gpt-4', modelVersion: 'gpt-4-0613' },
     );
     await engine.set(
       'What is Rust?',
       { answer: 'RS' },
-      { model: 'gpt-4', modelVersion: 'gpt-4-0613' }
+      { model: 'gpt-4', modelVersion: 'gpt-4-0613' },
     );
 
     const result = await engine.get('Tell me about JavaScript', {

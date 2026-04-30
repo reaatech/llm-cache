@@ -1,2 +1,2 @@
-export { type EmbeddingProvider, type EmbeddingProviderConfig } from './EmbeddingProvider.js';
+export type { EmbeddingProvider, EmbeddingProviderConfig } from './EmbeddingProvider.js';
 export { OpenAIEmbedder } from './OpenAIEmbedder.js';

@@ -1,9 +1,9 @@
 import type {
   CacheEntry,
-  InvalidationCriteria,
-  StorageStats,
   HealthStatus,
+  InvalidationCriteria,
   SimilarityResult,
+  StorageStats,
   VectorSearchFilters,
 } from '../types/index.js';
 
@@ -39,6 +39,6 @@ export interface VectorStorageAdapter extends StorageAdapter {
     embedding: number[],
     threshold: number,
     filters: VectorSearchFilters,
-    limit?: number
+    limit?: number,
   ): Promise<SimilarityResult[]>;
 }

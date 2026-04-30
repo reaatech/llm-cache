@@ -1,5 +1,5 @@
-import type { SimilarityResult, VectorSearchFilters, CacheEntry } from '../types/index.js';
 import type { VectorStorageAdapter } from '../storage/StorageAdapter.js';
+import type { CacheEntry, SimilarityResult, VectorSearchFilters } from '../types/index.js';
 
 export class SimilarityMatcher {
   constructor(private vectorStorage: VectorStorageAdapter) {}
@@ -8,7 +8,7 @@ export class SimilarityMatcher {
     embedding: number[],
     filters: VectorSearchFilters,
     threshold: number,
-    limit = 10
+    limit = 10,
   ): Promise<SimilarityResult[]> {
     const results = await this.vectorStorage.findSimilar(embedding, threshold, filters, limit);
 

@@ -161,7 +161,7 @@ pnpm test
 pnpm test:coverage
 
 # Specific package tests
-pnpm test --filter=@llm-cache/core
+pnpm test --filter=@reaatech/llm-cache
 
 # Watch mode
 pnpm test:watch

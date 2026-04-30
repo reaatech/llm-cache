@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
+import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import type { createApp } from './app.js';
 
 const originalFetch = globalThis.fetch;
@@ -16,11 +16,11 @@ describe('Server App', () => {
         if (url.includes('api.openai.com')) {
           return new Response(
             JSON.stringify({ data: [{ embedding: new Array(1536).fill(0.1) }] }),
-            { status: 200, headers: { 'Content-Type': 'application/json' } }
+            { status: 200, headers: { 'Content-Type': 'application/json' } },
           );
         }
         return originalFetch(input, init);
-      })
+      }),
     );
 
     process.env.OPENAI_API_KEY = 'test-key';
@@ -40,10 +40,14 @@ describe('Server App', () => {
   afterAll(async () => {
     await new Promise<void>((resolve) => app.server.close(() => resolve()));
     vi.unstubAllGlobals();
-    delete process.env.OPENAI_API_KEY;
+    process.env.OPENAI_API_KEY = undefined;
   });
 
-  async function fetchJson(path: string, opts?: RequestInit) {
+  async function fetchJson(
+    path: string,
+    opts?: RequestInit,
+    // biome-ignore lint/suspicious/noExplicitAny: test response fixture
+  ): Promise<{ status: number; data: any }> {
     const res = await fetch(`${baseUrl}${path}`, opts);
     const data = await res.json();
     return { status: res.status, data };

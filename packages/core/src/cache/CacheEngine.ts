@@ -1,18 +1,18 @@
+import { v4 as uuidv4 } from 'uuid';
+import type { CacheConfig } from '../config/CacheConfig.js';
+import type { EmbeddingProvider } from '../embedding/EmbeddingProvider.js';
+import type { StorageAdapter, VectorStorageAdapter } from '../storage/StorageAdapter.js';
 import type {
   CacheEntry,
-  CacheResult,
-  CacheOptions,
   CacheMetadata,
-  VectorSearchFilters,
+  CacheOptions,
+  CacheResult,
   CostCalculatorLike,
   InvalidateResult,
+  VectorSearchFilters,
 } from '../types/index.js';
-import type { StorageAdapter, VectorStorageAdapter } from '../storage/StorageAdapter.js';
-import type { EmbeddingProvider } from '../embedding/EmbeddingProvider.js';
-import type { CacheConfig } from '../config/CacheConfig.js';
-import type { EncryptionService, EncryptedPayload } from '../utils/encryption.js';
-import { buildPromptHash, buildCacheFingerprint, buildExactMatchKey } from '../utils/hash.js';
-import { v4 as uuidv4 } from 'uuid';
+import type { EncryptedPayload, EncryptionService } from '../utils/encryption.js';
+import { buildCacheFingerprint, buildExactMatchKey, buildPromptHash } from '../utils/hash.js';
 
 export interface CacheEngineDependencies {
   storage: StorageAdapter;
@@ -98,7 +98,7 @@ export class CacheEngine {
         embedding,
         this.config.similarity.threshold,
         filters,
-        this.config.similarity.maxResults
+        this.config.similarity.maxResults,
       );
 
       const fresh = similarEntries.filter((r) => !this.isExpired(r.entry));
@@ -128,15 +128,15 @@ export class CacheEngine {
   }
 
   async getBatch(
-    prompts: Array<{ prompt: string; options?: CacheOptions }>
+    prompts: Array<{ prompt: string; options?: CacheOptions }>,
   ): Promise<Array<CacheResult | { hit: false; reason: 'error'; error: string }>> {
     const settled = await Promise.allSettled(
-      prompts.map(({ prompt, options }) => this.get(prompt, options))
+      prompts.map(({ prompt, options }) => this.get(prompt, options)),
     );
     return settled.map((s) =>
       s.status === 'fulfilled'
         ? s.value
-        : ({ hit: false, reason: 'error', error: errorMessage(s.reason) } as const)
+        : ({ hit: false, reason: 'error', error: errorMessage(s.reason) } as const),
     );
   }
 
@@ -144,7 +144,7 @@ export class CacheEngine {
     prompt: string,
     response: unknown,
     options?: CacheOptions,
-    metadata?: CacheMetadata
+    metadata?: CacheMetadata,
   ): Promise<CacheEntry> {
     if (!prompt) {
       throw new Error('Prompt must be a non-empty string');
@@ -181,11 +181,7 @@ export class CacheEngine {
       total: (metadata?.tokens?.prompt ?? 0) + (metadata?.tokens?.completion ?? 0),
     };
 
-    const cost = this.calculateCost(
-      options?.model ?? 'unknown',
-      tokens.prompt,
-      tokens.completion
-    );
+    const cost = this.calculateCost(options?.model ?? 'unknown', tokens.prompt, tokens.completion);
 
     const entry: CacheEntry = {
       id: uuidv4(),
@@ -225,17 +221,17 @@ export class CacheEngine {
       response: unknown;
       options?: CacheOptions;
       metadata?: CacheMetadata;
-    }>
+    }>,
   ): Promise<Array<{ ok: true; entry: CacheEntry } | { ok: false; error: string }>> {
     const settled = await Promise.allSettled(
       items.map(({ prompt, response, options, metadata }) =>
-        this.set(prompt, response, options, metadata)
-      )
+        this.set(prompt, response, options, metadata),
+      ),
     );
     return settled.map((s) =>
       s.status === 'fulfilled'
         ? ({ ok: true, entry: s.value } as const)
-        : ({ ok: false, error: errorMessage(s.reason) } as const)
+        : ({ ok: false, error: errorMessage(s.reason) } as const),
     );
   }
 
@@ -297,7 +293,7 @@ export class CacheEngine {
   private calculateCost(
     model: string,
     promptTokens: number,
-    completionTokens: number
+    completionTokens: number,
   ): { prompt: number; completion: number; total: number } {
     if (!this.config.cost.enabled || !this.costCalculator) {
       return { prompt: 0, completion: 0, total: 0 };
@@ -306,7 +302,7 @@ export class CacheEngine {
       model,
       promptTokens,
       completionTokens,
-      this.config.cost.currency
+      this.config.cost.currency,
     );
     return {
       prompt: breakdown.inputCost,

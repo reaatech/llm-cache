@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { CacheConfigSchema } from './CacheConfig.js';
 
 describe('CacheConfigSchema', () => {
@@ -108,7 +108,7 @@ describe('CacheConfigSchema', () => {
       CacheConfigSchema.parse({
         storage: { adapter: 'postgres' },
         vectorStorage: { adapter: 'memory' },
-      })
+      }),
     ).toThrow();
   });
 
@@ -118,7 +118,7 @@ describe('CacheConfigSchema', () => {
         storage: { adapter: 'memory' },
         vectorStorage: { adapter: 'memory' },
         similarity: { threshold: 1.5 },
-      })
+      }),
     ).toThrow();
   });
 
@@ -128,7 +128,7 @@ describe('CacheConfigSchema', () => {
         storage: { adapter: 'memory' },
         vectorStorage: { adapter: 'memory' },
         observability: { logging: 'verbose' },
-      })
+      }),
     ).toThrow();
   });
 });

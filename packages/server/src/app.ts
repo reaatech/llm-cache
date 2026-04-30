@@ -1,17 +1,17 @@
-import { createServer, type IncomingMessage, type ServerResponse } from 'node:http';
-import { URL } from 'node:url';
 import { randomUUID, timingSafeEqual } from 'node:crypto';
+import { type IncomingMessage, type ServerResponse, createServer } from 'node:http';
+import { URL } from 'node:url';
 import {
   CacheEngine,
-  InMemoryAdapter,
-  OpenAIEmbedder,
   type CacheOptions,
   type EmbeddingProvider,
-} from '@llm-cache/core';
-import { RedisAdapter } from '@llm-cache/adapters-redis';
-import { DynamoDBAdapter } from '@llm-cache/adapters-dynamodb';
-import { QdrantAdapter } from '@llm-cache/adapters-qdrant';
-import { MetricsCollector, Logger } from '@llm-cache/observability';
+  InMemoryAdapter,
+  OpenAIEmbedder,
+} from '@reaatech/llm-cache';
+import { DynamoDBAdapter } from '@reaatech/llm-cache-adapters-dynamodb';
+import { QdrantAdapter } from '@reaatech/llm-cache-adapters-qdrant';
+import { RedisAdapter } from '@reaatech/llm-cache-adapters-redis';
+import { Logger, MetricsCollector } from '@reaatech/llm-cache-observability';
 import { loadConfig } from './config.js';
 
 const config = loadConfig();
@@ -47,7 +47,7 @@ async function createStorageAdapter() {
     case 'dynamodb': {
       if (!config.dynamodbRegion || !config.dynamodbTable) {
         throw new Error(
-          'DYNAMODB_REGION and DYNAMODB_TABLE are required when STORAGE_ADAPTER=dynamodb'
+          'DYNAMODB_REGION and DYNAMODB_TABLE are required when STORAGE_ADAPTER=dynamodb',
         );
       }
       return new DynamoDBAdapter({
@@ -56,7 +56,6 @@ async function createStorageAdapter() {
         endpoint: config.dynamodbEndpoint,
       });
     }
-    case 'memory':
     default:
       logger.info('Using in-memory storage');
       return new InMemoryAdapter();
@@ -82,7 +81,6 @@ async function createVectorStorageAdapter() {
       });
       return adapter;
     }
-    case 'memory':
     default:
       logger.info('Using in-memory vector storage');
       return new InMemoryAdapter();
@@ -105,12 +103,12 @@ function createEmbedder(): EmbeddingProvider {
   return {
     embed: () => {
       return Promise.reject(
-        new Error('OpenAI API key not configured. Set OPENAI_API_KEY environment variable.')
+        new Error('OpenAI API key not configured. Set OPENAI_API_KEY environment variable.'),
       );
     },
     embedBatch: () => {
       return Promise.reject(
-        new Error('OpenAI API key not configured. Set OPENAI_API_KEY environment variable.')
+        new Error('OpenAI API key not configured. Set OPENAI_API_KEY environment variable.'),
       );
     },
   };
@@ -303,7 +301,7 @@ export async function createApp(): Promise<App> {
 
           const raw = body.criteria ?? {};
           const olderThanDate = raw.olderThan ? new Date(raw.olderThan) : undefined;
-          if (raw.olderThan && isNaN(olderThanDate!.getTime())) {
+          if (raw.olderThan && Number.isNaN(olderThanDate?.getTime())) {
             sendJson(res, 400, { error: 'Invalid "olderThan" date' });
             return;
           }
@@ -365,10 +363,7 @@ export async function createApp(): Promise<App> {
     if ('disconnect' in storage && typeof storage.disconnect === 'function') {
       await storage.disconnect();
     }
-    if (
-      'disconnect' in vectorStorage &&
-      typeof vectorStorage.disconnect === 'function'
-    ) {
+    if ('disconnect' in vectorStorage && typeof vectorStorage.disconnect === 'function') {
       await vectorStorage.disconnect();
     }
   }
@@ -379,7 +374,7 @@ export async function createApp(): Promise<App> {
 class HttpError extends Error {
   constructor(
     public status: number,
-    message: string
+    message: string,
   ) {
     super(message);
     this.name = 'HttpError';

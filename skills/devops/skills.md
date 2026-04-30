@@ -54,7 +54,7 @@ The DevOps Agent is responsible for implementing CI/CD, deployment, and infrastr
 
 ### Distribution Model Note
 
-The Docker, Kubernetes, and Helm configurations described here apply to the **`@llm-cache/server` service wrapper**. The server is **optional for end users** (who can use `@llm-cache/core` directly) but is **required to develop and maintain** as a first-class workspace package. It must be built, tested, and released in lockstep with core releases.
+The Docker, Kubernetes, and Helm configurations described here apply to the **`@reaatech/llm-cache-server` service wrapper**. The server is **optional for end users** (who can use `@reaatech/llm-cache` directly) but is **required to develop and maintain** as a first-class workspace package. It must be built, tested, and released in lockstep with core releases.
 
 ### Example 1: GitHub Actions CI/CD Pipeline
 
@@ -272,7 +272,7 @@ RUN corepack enable && corepack prepare pnpm@8.15.0 --activate
 
 # Install dependencies
 FROM base AS dependencies
-RUN pnpm install --frozen-lockfile --filter=@llm-cache/core...
+RUN pnpm install --frozen-lockfile --filter=@reaatech/llm-cache...
 
 # Build application
 FROM dependencies AS build
@@ -282,7 +282,7 @@ COPY packages/cost-tracker ./packages/cost-tracker
 COPY packages/observability ./packages/observability
 COPY tsconfig.json .
 
-RUN pnpm build --filter=@llm-cache/core
+RUN pnpm build --filter=@reaatech/llm-cache
 
 # Production image
 FROM node:20-alpine AS production
@@ -505,9 +505,9 @@ data:
 
 - Must support Node.js 18+
 - Must use pnpm for package management
-- Must support Kubernetes deployments (for `@llm-cache/server` service wrapper)
+- Must support Kubernetes deployments (for `@reaatech/llm-cache-server` service wrapper)
 - Must integrate with AWS services
-- Docker and k8s configurations are for the `@llm-cache/server` service wrapper (required to develop, optional for users)
+- Docker and k8s configurations are for the `@reaatech/llm-cache-server` service wrapper (required to develop, optional for users)
 
 ### Performance Constraints
 

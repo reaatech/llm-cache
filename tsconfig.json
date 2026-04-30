@@ -26,5 +26,5 @@
     "isolatedModules": true,
     "verbatimModuleSyntax": true
   },
-  "exclude": ["node_modules", "dist", "coverage"]
+  "exclude": ["node_modules", "dist", "*.config.js"]
 }

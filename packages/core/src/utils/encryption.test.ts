@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { EncryptionService } from './encryption.js';
 
 describe('EncryptionService', () => {
@@ -38,7 +38,7 @@ describe('EncryptionService', () => {
 
   it('should throw on tampered ciphertext', () => {
     const encrypted = service.encrypt('secret');
-    encrypted.ciphertext = encrypted.ciphertext.slice(0, -4) + 'dead';
+    encrypted.ciphertext = `${encrypted.ciphertext.slice(0, -4)}dead`;
     expect(() => service.decrypt(encrypted)).toThrow();
   });
 });

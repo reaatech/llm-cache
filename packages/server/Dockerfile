@@ -20,7 +20,7 @@ FROM dependencies AS build
 COPY packages ./packages
 COPY tsconfig.json .
 
-RUN pnpm build --filter=@llm-cache/server...
+RUN pnpm build --filter=@reaatech/llm-cache-server...
 
 FROM node:20-alpine AS production
 RUN addgroup -g 1001 -S nodejs && adduser -S nodejs -u 1001
