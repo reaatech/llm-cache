@@ -40,7 +40,7 @@ describe('Server App', () => {
   afterAll(async () => {
     await new Promise<void>((resolve) => app.server.close(() => resolve()));
     vi.unstubAllGlobals();
-    delete process.env.OPENAI_API_KEY;
+    process.env.OPENAI_API_KEY = undefined;
   });
 
   async function fetchJson(path: string, opts?: RequestInit) {

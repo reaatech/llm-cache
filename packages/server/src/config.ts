@@ -20,13 +20,13 @@ export interface ServerConfig {
 
 function parseNumber(value: string | undefined, defaultValue: number): number {
   if (!value) return defaultValue;
-  const parsed = parseInt(value, 10);
+  const parsed = Number.parseInt(value, 10);
   return Number.isNaN(parsed) ? defaultValue : parsed;
 }
 
 function parseFloatValue(value: string | undefined, defaultValue: number): number {
   if (!value) return defaultValue;
-  const parsed = parseFloat(value);
+  const parsed = Number.parseFloat(value);
   return Number.isNaN(parsed) ? defaultValue : parsed;
 }
 

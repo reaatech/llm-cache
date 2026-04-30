@@ -20,18 +20,8 @@
   "bugs": {
     "url": "https://github.com/reaatech/llm-cache/issues"
   },
-  "keywords": [
-    "llm",
-    "cache",
-    "semantic-cache",
-    "embeddings",
-    "openai",
-    "vector-search"
-  ],
-  "files": [
-    "dist",
-    "README.md"
-  ],
+  "keywords": ["llm", "cache", "semantic-cache", "embeddings", "openai", "vector-search"],
+  "files": ["dist", "README.md"],
   "publishConfig": {
     "access": "public"
   },
