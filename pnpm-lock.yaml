@@ -48,16 +48,16 @@ importers:
 
   examples:
     dependencies:
-      '@llm-cache/adapters-dynamodb':
+      '@reaatech/llm-cache-adapters-dynamodb':
         specifier: workspace:*
         version: link:../packages/adapters/dynamodb
-      '@llm-cache/adapters-qdrant':
+      '@reaatech/llm-cache-adapters-qdrant':
         specifier: workspace:*
         version: link:../packages/adapters/qdrant
-      '@llm-cache/adapters-redis':
+      '@reaatech/llm-cache-adapters-redis':
         specifier: workspace:*
         version: link:../packages/adapters/redis
-      '@llm-cache/core':
+      '@reaatech/llm-cache':
         specifier: workspace:*
         version: link:../packages/core
     devDependencies:
@@ -76,7 +76,7 @@ importers:
       '@aws-sdk/lib-dynamodb':
         specifier: ^3.500.0
         version: 3.1035.0(@aws-sdk/client-dynamodb@3.1035.0)
-      '@llm-cache/core':
+      '@reaatech/llm-cache':
         specifier: workspace:*
         version: link:../../core
     devDependencies:
@@ -92,7 +92,7 @@ importers:
 
   packages/adapters/qdrant:
     dependencies:
-      '@llm-cache/core':
+      '@reaatech/llm-cache':
         specifier: workspace:*
         version: link:../../core
       '@qdrant/js-client-rest':
@@ -117,7 +117,7 @@ importers:
 
   packages/adapters/redis:
     dependencies:
-      '@llm-cache/core':
+      '@reaatech/llm-cache':
         specifier: workspace:*
         version: link:../../core
       redis:
@@ -158,7 +158,7 @@ importers:
 
   packages/cost-tracker:
     dependencies:
-      '@llm-cache/core':
+      '@reaatech/llm-cache':
         specifier: workspace:*
         version: link:../core
     devDependencies:
@@ -186,22 +186,22 @@ importers:
 
   packages/server:
     dependencies:
-      '@llm-cache/adapters-dynamodb':
+      '@reaatech/llm-cache-adapters-dynamodb':
         specifier: workspace:*
         version: link:../adapters/dynamodb
-      '@llm-cache/adapters-qdrant':
+      '@reaatech/llm-cache-adapters-qdrant':
         specifier: workspace:*
         version: link:../adapters/qdrant
-      '@llm-cache/adapters-redis':
+      '@reaatech/llm-cache-adapters-redis':
         specifier: workspace:*
         version: link:../adapters/redis
-      '@llm-cache/core':
+      '@reaatech/llm-cache':
         specifier: workspace:*
         version: link:../core
-      '@llm-cache/cost-tracker':
+      '@reaatech/llm-cache-cost-tracker':
         specifier: workspace:*
         version: link:../cost-tracker
-      '@llm-cache/observability':
+      '@reaatech/llm-cache-observability':
         specifier: workspace:*
         version: link:../observability
     devDependencies:

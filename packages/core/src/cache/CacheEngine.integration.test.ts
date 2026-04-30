@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { CacheEngine, InMemoryAdapter } from '@llm-cache/core';
-import type { CacheConfig, EmbeddingProvider } from '@llm-cache/core';
+import { CacheEngine, InMemoryAdapter } from '@reaatech/llm-cache';
+import type { CacheConfig, EmbeddingProvider } from '@reaatech/llm-cache';
 
 class DeterministicEmbedder implements EmbeddingProvider {
   embed(text: string): Promise<number[]> {

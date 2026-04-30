@@ -7,11 +7,11 @@ import {
   OpenAIEmbedder,
   type CacheOptions,
   type EmbeddingProvider,
-} from '@llm-cache/core';
-import { RedisAdapter } from '@llm-cache/adapters-redis';
-import { DynamoDBAdapter } from '@llm-cache/adapters-dynamodb';
-import { QdrantAdapter } from '@llm-cache/adapters-qdrant';
-import { MetricsCollector, Logger } from '@llm-cache/observability';
+} from '@reaatech/llm-cache';
+import { RedisAdapter } from '@reaatech/llm-cache-adapters-redis';
+import { DynamoDBAdapter } from '@reaatech/llm-cache-adapters-dynamodb';
+import { QdrantAdapter } from '@reaatech/llm-cache-adapters-qdrant';
+import { MetricsCollector, Logger } from '@reaatech/llm-cache-observability';
 import { loadConfig } from './config.js';
 
 const config = loadConfig();

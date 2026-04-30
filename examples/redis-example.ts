@@ -1,6 +1,6 @@
-import { CacheEngine, InMemoryAdapter, OpenAIEmbedder } from '@llm-cache/core';
-import { RedisAdapter } from '@llm-cache/adapters-redis';
-import type { CacheConfig } from '@llm-cache/core';
+import { CacheEngine, InMemoryAdapter, OpenAIEmbedder } from '@reaatech/llm-cache';
+import { RedisAdapter } from '@reaatech/llm-cache-adapters-redis';
+import type { CacheConfig } from '@reaatech/llm-cache';
 
 const config: CacheConfig = {
   storage: { adapter: 'redis' },

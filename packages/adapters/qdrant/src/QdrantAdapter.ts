@@ -7,8 +7,8 @@ import type {
   HealthStatus,
   SimilarityResult,
   VectorSearchFilters,
-} from '@llm-cache/core';
-import type { VectorStorageAdapter } from '@llm-cache/core';
+} from '@reaatech/llm-cache';
+import type { VectorStorageAdapter } from '@reaatech/llm-cache';
 
 // Stable namespace UUID so the same key always maps to the same point ID across processes.
 const KEY_NAMESPACE = '6ba7b811-9dad-11d1-80b4-00c04fd430c8';

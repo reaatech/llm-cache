@@ -1,6 +1,6 @@
 import { createClient, type RedisClientType } from 'redis';
-import type { CacheEntry, InvalidationCriteria, StorageStats, HealthStatus } from '@llm-cache/core';
-import type { StorageAdapter } from '@llm-cache/core';
+import type { CacheEntry, InvalidationCriteria, StorageStats, HealthStatus } from '@reaatech/llm-cache';
+import type { StorageAdapter } from '@reaatech/llm-cache';
 
 export interface RedisAdapterConfig {
   url: string;

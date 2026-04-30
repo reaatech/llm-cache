@@ -1,4 +1,4 @@
-import { CacheConfigSchema, type CacheConfig } from '@llm-cache/core';
+import { CacheConfigSchema, type CacheConfig } from '@reaatech/llm-cache';
 
 export interface ServerConfig {
   port: number;

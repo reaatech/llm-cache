@@ -18,9 +18,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: 8
+        uses: pnpm/action-setup@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -30,9 +28,6 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-
-      - name: Build workspace
-        run: pnpm build
 
       - name: Lint
         run: pnpm lint
@@ -48,9 +43,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: 8
+        uses: pnpm/action-setup@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -71,6 +64,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        node-version: ['20', '22']
         package:
           - packages/core
           - packages/adapters/redis
@@ -84,21 +78,16 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: 8
+        uses: pnpm/action-setup@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version: ${{ matrix.node-version }}
           cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-
-      - name: Build workspace
-        run: pnpm build
 
       - name: Test ${{ matrix.package }}
         run: pnpm --filter ${{ matrix.package }} test
@@ -112,9 +101,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: 8
+        uses: pnpm/action-setup@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -125,17 +112,14 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build workspace
-        run: pnpm build
-
       - name: Run coverage (core)
-        run: pnpm --filter @llm-cache/core test:coverage
+        run: pnpm --filter @reaatech/llm-cache test:coverage
 
       - name: Run coverage (cost-tracker)
-        run: pnpm --filter @llm-cache/cost-tracker test:coverage
+        run: pnpm --filter @reaatech/llm-cache-cost-tracker test:coverage
 
       - name: Run coverage (observability)
-        run: pnpm --filter @llm-cache/observability test:coverage
+        run: pnpm --filter @reaatech/llm-cache-observability test:coverage
 
   build:
     name: Build All Packages
@@ -146,9 +130,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: 8
+        uses: pnpm/action-setup@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -196,9 +178,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: 8
+        uses: pnpm/action-setup@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4

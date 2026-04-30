@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { RedisAdapter } from './RedisAdapter.js';
-import type { CacheEntry } from '@llm-cache/core';
+import type { CacheEntry } from '@reaatech/llm-cache';
 
 function makeEntry(overrides?: Partial<CacheEntry>): CacheEntry {
   const now = new Date();
