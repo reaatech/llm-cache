@@ -13,6 +13,7 @@ import type {
   CacheEntry,
   HealthStatus,
   InvalidationCriteria,
+  JsonValue,
   StorageAdapter,
   StorageStats,
 } from '@reaatech/llm-cache';
@@ -341,7 +342,7 @@ export class DynamoDBAdapter implements StorageAdapter {
   private deserialize(item: Record<string, unknown>): CacheEntry {
     const metadata = item.metadata as Record<string, unknown>;
 
-    let response: unknown = null;
+    let response: JsonValue = null;
     try {
       response = JSON.parse(String(item.response ?? 'null'));
     } catch {
