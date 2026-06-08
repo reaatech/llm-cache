@@ -9,6 +9,7 @@ import type {
   CacheResult,
   CostCalculatorLike,
   InvalidateResult,
+  JsonValue,
   VectorSearchFilters,
 } from '../types/index.js';
 import type { EncryptedPayload, EncryptionService } from '../utils/encryption.js';
@@ -142,7 +143,7 @@ export class CacheEngine {
 
   async set(
     prompt: string,
-    response: unknown,
+    response: JsonValue,
     options?: CacheOptions,
     metadata?: CacheMetadata,
   ): Promise<CacheEntry> {
@@ -218,7 +219,7 @@ export class CacheEngine {
   async setBatch(
     items: Array<{
       prompt: string;
-      response: unknown;
+      response: JsonValue;
       options?: CacheOptions;
       metadata?: CacheMetadata;
     }>,

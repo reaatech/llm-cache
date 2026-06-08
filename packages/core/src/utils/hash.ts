@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto';
+import type { ToolDefinition } from '../types/index.js';
 
 export function sha256(input: string): string {
   return createHash('sha256').update(input).digest('hex');
@@ -31,7 +32,7 @@ export function buildCacheFingerprint(options: {
   topP?: number;
   maxTokens?: number;
   systemPrompt?: string;
-  tools?: unknown[];
+  tools?: ToolDefinition[];
   responseFormat?: string;
 }): string {
   const canonical = JSON.stringify({

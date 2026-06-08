@@ -6,6 +6,7 @@ import {
   type CacheOptions,
   type EmbeddingProvider,
   InMemoryAdapter,
+  type JsonValue,
   OpenAIEmbedder,
 } from '@reaatech/llm-cache';
 import { DynamoDBAdapter } from '@reaatech/llm-cache-adapters-dynamodb';
@@ -255,7 +256,7 @@ export async function createApp(): Promise<App> {
         if (url.pathname === '/cache/set' && req.method === 'POST') {
           const body = (await readBody(req)) as {
             prompt: string;
-            response: unknown;
+            response: JsonValue;
             options?: CacheOptions;
             metadata?: {
               queryType?: 'factual' | 'creative' | 'analytical';

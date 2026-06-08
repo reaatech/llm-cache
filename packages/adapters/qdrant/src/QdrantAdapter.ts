@@ -3,6 +3,7 @@ import type {
   CacheEntry,
   HealthStatus,
   InvalidationCriteria,
+  JsonValue,
   SimilarityResult,
   StorageStats,
   VectorSearchFilters,
@@ -375,7 +376,7 @@ export class QdrantAdapter implements VectorStorageAdapter {
   private deserializeEntry(payload: Record<string, unknown>, vector: number[]): CacheEntry {
     const metadata = payload.metadata as Record<string, unknown>;
 
-    let response: unknown = null;
+    let response: JsonValue = null;
     try {
       response = JSON.parse(String(payload.response));
     } catch {

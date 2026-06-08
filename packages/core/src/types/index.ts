@@ -1,8 +1,25 @@
+export type JsonValue =
+  | string
+  | number
+  | boolean
+  | null
+  | JsonValue[]
+  | { [key: string]: JsonValue };
+
+export interface ToolDefinition {
+  type?: string;
+  function: {
+    name: string;
+    description?: string;
+    parameters: Record<string, unknown>;
+  };
+}
+
 export interface CacheEntry {
   id: string;
   prompt: string;
   promptHash: string;
-  response: unknown;
+  response: JsonValue;
   embedding: number[];
   model: string;
   modelVersion: string;
@@ -56,7 +73,7 @@ export interface CacheOptions {
   topP?: number;
   maxTokens?: number;
   systemPrompt?: string;
-  tools?: unknown[];
+  tools?: ToolDefinition[];
   responseFormat?: 'text' | 'json_object' | 'json_schema';
 }
 
